@@ -1,1 +1,0 @@
-Te va tirando valores del microfono, y a partir de tal valor (en este caso 600), te va a decir micrófono detectado
