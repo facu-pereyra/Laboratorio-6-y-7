@@ -1,4 +1,7 @@
 Acá Voy a poner las modificaciones que voy haciendo al código
 
 22/04:
-Quise escribir una parte del código para que comience a grabar a partir de las 9 hasta las 21. Me tira error de algo (VER Roberto). Me falta incluir que guarde en la SD
+Quise escribir una parte del código para que comience a grabar a partir de las 9 hasta las 21. Me falta incluir que guarde en la SD
+
+23/04:
+
