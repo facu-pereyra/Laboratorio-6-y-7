@@ -2,7 +2,6 @@
 Lo que quise pedir acá es que a partir de las 9 a las 21, el microfono grabe y que cuando sean las 9 aparezca una leyenda que diga
 que comenzó a grabar, y a las 21 hs diga q dejó de grabar.
 Me falta ver como lo grabo
-Tira error, preguntar a Roberto
 
 */
 // Date and time functions using a DS3231 RTC connected via I2C and Wire lib
@@ -14,7 +13,7 @@ bool grabar = true;    // variable de control con valor verdadero
 
 #define ledsito 4
 #define MIC A0
-int sig=0
+int sig=0;
 
 //Estas 2 de abajo son para la SD
 #include <SPI.h>    // incluye libreria interfaz SPI
