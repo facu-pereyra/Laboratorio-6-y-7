@@ -14,7 +14,7 @@
    No hay Puerto Serie
 
    Inicia a una Hora (HH:MM) que se especifica.
-   Además Inicia al colocar el PinStart (2) a GND
+   Además Inicia al colocar el PinStart (2) a GND                                           //Es un boton. Como lo conectamos ?
    Una vez que se llena un fichero se pasa automáticamente al próximo
 
    Detiene a una Hora (HH:MM) que se especifica.
@@ -48,7 +48,7 @@ uint8_t HoraFinal = 15;
 uint8_t MinFinal  = 1;
 
 const uint32_t FILE_BLOCK_COUNT = 51200; //Aquí se modifica el tamaño del fichero
-// con 256000 a 25 kHz son @ 4,33 minutos
+// con 256000 a 25 kHz son @ 4,33 minutos 
 
 #define FILE_BASE_NAME "TEST" //4 caracteres ahora mismo
 //*************************************************************
@@ -69,7 +69,7 @@ uint8_t RST_PIN = 6;
 //==============================================================================
 
 volatile boolean Siguiente = false; //para ir al próximo fichero
-volatile boolean Detener   = false;
+volatile boolean Detener   = false;  // Que significa que sea volatil ? 
 
 const float SAMPLE_INTERVAL = 1.0 / SAMPLE_RATE;
 
@@ -79,7 +79,7 @@ const float SAMPLE_INTERVAL = 1.0 / SAMPLE_RATE;
 uint8_t const ADC_REF = (1 << REFS1) | (1 << REFS0);  // atMega328 es 1.1
 
 //------------------------------------------------------------------------------
-const uint8_t BUFFER_BLOCK_COUNT = 1;
+const uint8_t BUFFER_BLOCK_COUNT = 1; //Espacio para almacenamiento
 // Dimension for queues of 512 byte SD blocks.
 const uint8_t QUEUE_DIM = 16;  // Must be a power of two!
 
@@ -132,7 +132,7 @@ inline uint8_t queueNext(uint8_t ht) {
 }
 
 //==============================================================================
-RTC_DS3231 rtc;
+RTC_DS3231 rtc; //Cambiamos RTC que estamos usando 
 
 void dateTime(uint16_t* date, uint16_t* time) {
   DateTime now = rtc.now();
@@ -159,7 +159,7 @@ uint8_t adcindex = 1;
 
 // Insure no timer events are missed.
 volatile bool timerError = false;
-volatile bool timerFlag = false;
+volatile bool timerFlag = false;  //Que hacer el timerFlag?
 //------------------------------------------------------------------------------
 // ADC done interrupt.
 
@@ -232,7 +232,7 @@ ISR(ADC_vect) {
   }
 }
 //------------------------------------------------------------------------------
-// timer1 interrupt to clear OCF1B
+// timer1 interrupt to clear OCF1B /Que es OCF1B ?
 ISR(TIMER1_COMPB_vect) {
   // Make sure ADC ISR responded to timer event.
   if (timerFlag) {
@@ -262,7 +262,7 @@ void adcInit(metadata_t* meta) {
   uint8_t adps;  // prescaler bits for ADCSRA
   uint32_t ticks = F_CPU * SAMPLE_INTERVAL + 0.5; // Sample interval cpu cycles.
 
-  if (ADC_REF & ~((1 << REFS0) | (1 << REFS1)))	LedError(); //aquí nunca va a dar error
+  if (ADC_REF & ~((1 << REFS0) | (1 << REFS1)))	LedError(); //aquí nunca va a dar error //Se puede eliminar?
 
 #ifdef ADC_PRESCALER
   if (ADC_PRESCALER > 7 || ADC_PRESCALER < 2)	LedError();	 //aquí nunca va a dar error
@@ -452,7 +452,7 @@ void logData() {
     if (endErase > endBlock) {
       endErase = endBlock;
     }
-    if (!sd.card()->erase(bgnErase, endErase))	LedError();
+    if (!sd.card()->erase(bgnErase, endErase))	LedError(); //No debería existir esta parte si no hay tarjeta SD 
     bgnErase = endErase + 1;
   }
 
@@ -491,7 +491,7 @@ void logData() {
   // Start logging interrupts.
   adcStart();
 
-  while (1) {
+  while (1) { // El 1 significa que está prendido constantemente ?
     digitalWrite(LED_Work, HIGH);
 
     if (fullHead != fullTail) {
@@ -608,7 +608,7 @@ void setup(void) {
   // attachInterrupt(digitalPinToInterrupt(PinStart), SiguienteISR, RISING);
   // attachInterrupt(digitalPinToInterrupt(PinBreak), StopISR, CHANGE);
 
-  //digitalWrite(PinStart, LOW); //garantizo un "cero" en el inicio
+  digitalWrite(PinStart, LOW); //garantizo un "cero" en el inicio //Estaba comentado pero lo pusimos
   //para que no inicie el sistema
 
   if (!sd.begin(10, SPI_FULL_SPEED)) LedError();
@@ -625,7 +625,9 @@ void setup(void) {
 // }
 
 //------------------------------------------------------------------------------
+// Acá falta agregar filtrado digital 
 void loop(void) {
+
   DateTime now = rtc.now();
   // Serial.print(now.hour());
   // Serial.print(":");
