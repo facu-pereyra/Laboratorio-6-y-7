@@ -27,7 +27,7 @@
 #ifdef __AVR__
 #include <SPI.h>
 #include <SdFat.h> 
-#include <SdFatUtil.h>// Salta Error VER
+#include "C:/Users/facunorma/Documents/Arduino/libraries/SdFat/SdFatUtil.h" // no me acepta el comando #include <SdFatUtil.h>. Uso #include "path/to/SdFatUtil.h"
 #include "AnalogBinLogger.h"
 //#include <avr/wdt.h> 	// para hacer Reset automático
 #include "RTClib.h"     // para el RTC
