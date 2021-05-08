@@ -8,4 +8,5 @@ Preguntas para Roberto
 6) Que es OCF1B?
 7) Línea 265 (hay muchos iguales) se pueden sacar? (pq nunca van a dar error)
 8) Ver líneas 455 y algunas otras
-9)
+
+Ya respondió.
