@@ -26,14 +26,13 @@ Running the Arduino from a battery or filtered power supply will reduce noise.
 #include <SPI.h>
 #include <TMRpcm.h>
 
-//#define SD_ChipSelectPin 53  //example uses hardware SS pin 53 on Mega2560
-#define SD_ChipSelectPin 10  //using digital pin 4 on arduino nano 328, can use other pins
+#define SD_ChipSelectPin 10  //Este pin es el de CS
 #define MIC A0
 TMRpcm audio;   // create an object for use in this sketch 
 
 void setup() {
   
-  pinMode(12,OUTPUT);  //Pin pairs: 9,10 Mega: 5-2,6-7,11-12,46-45
+  pinMode(12,OUTPUT);  //Este pin corresponde al MISO (ni idea pq hay q ponerlo como output)
   
   Serial.begin(9600);
   
