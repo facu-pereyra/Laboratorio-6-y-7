@@ -12,4 +12,6 @@ C:\Users\facunorma\Desktop\Labo6y7\grabando_sonido\grabando_sonido.ino:55:49: wa
 
 2) Tengo que escribirle en el Monitor serie la letra "r" para que empiece a grabar y la letra "s" para que pare. Es decir que no está automatizado.
 
-3) El archivo que se guarda en la SD se escucha pero me dice que esta como dañado (si el sonido dura 10 segundos, la barra en el reproductor que me dice el tiempo del archivo marca como más de 2 horas de duración). No se si el problema tiene que ver con (1) u otra cosa.
+3) El archivo que se guarda en la SD se escucha pero me dice que esta como dañado 
+(si el sonido dura 10 segundos, la barra en el reproductor que me dice el tiempo del archivo marca como más de 2 horas de duración). 
+No se si el problema tiene que ver con (1) u otra cosa.
