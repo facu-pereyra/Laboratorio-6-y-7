@@ -1,4 +1,4 @@
-Este código presenta varios problemas:
+El código grabando_sonido presenta varios problemas:
 
 1) Me tira el siguiente warning (pero aún así me graba):
 
