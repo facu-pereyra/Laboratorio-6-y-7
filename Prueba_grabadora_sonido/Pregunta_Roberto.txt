@@ -43,4 +43,4 @@ opción habilitada en Archivo -> Preferencias.
 Si compilo cualquier otro archivo.ino y hay algun error, el error que me tira al terminar de compilar es el error propio más el error antes dicho (el del día 12/05).
 Lo que es bueno es que si al compilar el archivo.ino no hay error, entonces no me hace problema y todo funciona normalmente. 
 Conclusión, nose porque si hay error al compilar me muestra otro error de otro archivo que ni siquiera tengo abierto (y además modifiqué el archivo en donde tuve ese
-problema de forma que al compilarlo el error desaparezca y desapareció, pero aún así al compilar otro archivo me siguen apareciendo los errores)
+problema de forma que al compilarlo el error desaparezca y desapareció, pero aún así al compilar otro archivo con error me siguen apareciendo los errores anteriores)
