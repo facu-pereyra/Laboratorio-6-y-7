@@ -1,129 +1,46 @@
+       Voy actualizando lo que pasa:
+
+       12/05
+
 Hola, lo que está entre [] es el error del código actual y lo demás es de lo que modifiqué anteriormente:
 
-
 Arduino:1.8.13 (Windows 7), Tarjeta:"Arduino Nano, ATmega328P (Old Bootloader)"
-
 [
 
 C:\Users\facunorma\Desktop\Prueba\Prueba.ino: In function 'void loop()':
-
 C:\Users\facunorma\Desktop\Prueba\Prueba.ino:41:46: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
-
        audio.startRecording("1.wav", 16000, A0);
-
                                               ^
-
 C:\Users\facunorma\Desktop\Prueba\Prueba.ino:49:32: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
-
      audio.stopRecording("1.wav");
-
-                                ^
+                               ^
 ]
 
 C:\Users\facunorma\Documents\Arduino\libraries\TMRpcm\TMRpcm.cpp: In member function 'byte TMRpcm::metaInfo(boolean, char*, char*, byte)':
-
 C:\Users\facunorma\Documents\Arduino\libraries\TMRpcm\TMRpcm.cpp:1382:18: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
-
    char* datStr = "LIST";
-
                   ^~~~~~
-
-C:\Users\facunorma\Documents\Arduino\libraries\TMRpcm\TMRpcm.cpp:1383:30: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
-
-   if(infoType == 1){datStr = "ID3 "; datStr[3] = 3;}
-
-                              ^~~~~~
-
-C:\Users\facunorma\Documents\Arduino\libraries\TMRpcm\TMRpcm.cpp:1411:42: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
-
-  char* tagNames[] = {"INAM","IART","IPRD"};
-
-                                          ^
-
-C:\Users\facunorma\Documents\Arduino\libraries\TMRpcm\TMRpcm.cpp:1411:42: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
-
-C:\Users\facunorma\Documents\Arduino\libraries\TMRpcm\TMRpcm.cpp:1411:42: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
-
-C:\Users\facunorma\Documents\Arduino\libraries\TMRpcm\TMRpcm.cpp:1431:18: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
-
-    tagNames[0] = "TPE1"; tagNames[1] ="TIT2"; tagNames[2] ="TALB";
-
-                  ^~~~~~
-
-C:\Users\facunorma\Documents\Arduino\libraries\TMRpcm\TMRpcm.cpp:1431:39: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
-
-    tagNames[0] = "TPE1"; tagNames[1] ="TIT2"; tagNames[2] ="TALB";
-
-                                       ^~~~~~
-
-C:\Users\facunorma\Documents\Arduino\libraries\TMRpcm\TMRpcm.cpp:1431:60: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
-
-    tagNames[0] = "TPE1"; tagNames[1] ="TIT2"; tagNames[2] ="TALB";
-
-                                                            ^~~~~~
-
-C:\Users\facunorma\Documents\Arduino\libraries\TMRpcm\TMRpcm.cpp: In member function 'void TMRpcm::finalizeWavTemplate(char*)':
-
-C:\Users\facunorma\Documents\Arduino\libraries\TMRpcm\TMRpcm.cpp:1569:65: warning: narrowing conversion of '(fSize >> 16)' from 'long unsigned int' to 'byte {aka unsigned char}' inside { } [-Wnarrowing]
-
-  seek(4); byte data[4] = {lowByte(fSize),highByte(fSize), fSize >> 16,fSize >> 24};
-
-                                                           ~~~~~~^~~~~
-
-C:\Users\facunorma\Documents\Arduino\libraries\TMRpcm\TMRpcm.cpp:1569:77: warning: narrowing conversion of '(fSize >> 24)' from 'long unsigned int' to 'byte {aka unsigned char}' inside { } [-Wnarrowing]
-
-  seek(4); byte data[4] = {lowByte(fSize),highByte(fSize), fSize >> 16,fSize >> 24};
-
-                                                                       ~~~~~~^~~~~
-
-C:\Users\facunorma\Documents\Arduino\libraries\TMRpcm\TMRpcm.cpp: In member function 'void TMRpcm::createWavTemplate(char*, unsigned int)':
-
-C:\Users\facunorma\Documents\Arduino\libraries\TMRpcm\TMRpcm.cpp:1609:5: error: 'SdVolume' was not declared in this scope
-
-     SdVolume vol;
-
-     ^~~~~~~~
-
-C:\Users\facunorma\Documents\Arduino\libraries\TMRpcm\TMRpcm.cpp:1609:5: note: suggested alternative: 'volume'
-
-     SdVolume vol;
-
-     ^~~~~~~~
-
-     volume
-
-C:\Users\facunorma\Documents\Arduino\libraries\TMRpcm\TMRpcm.cpp:1616:13: error: 'class Sd2Card' has no member named 'init'
-
-  if (!card1.init(SPI_FULL_SPEED,CSPin)) {
-
-             ^~~~
-
-C:\Users\facunorma\Documents\Arduino\libraries\TMRpcm\TMRpcm.cpp:1620:6: error: 'vol' was not declared in this scope
-
-  if(!vol.init(&card1)){}//Serial.println("card failed"); }
-
-      ^~~
+.
+. (acá hay mas errores)
+.
 
 C:\Users\facunorma\Documents\Arduino\libraries\TMRpcm\TMRpcm.cpp:1621:21: error: 'vol' was not declared in this scope
-
   if (!rut.openRoot(&vol)) {}//Serial.println("openRoot failed"); }
-
                      ^~~
-
 Se encontraron varias bibliotecas para "SdFat.h"
-
 Usado: C:\Users\facunorma\Documents\Arduino\libraries\SdFat
-
  No usado: C:\Program Files\Arduino\libraries\SdFat
-
  No usado: C:\Users\facunorma\Documents\Arduino\libraries\arduino_114439
-
 exit status 1
-
 Error compilando para la tarjeta Arduino Nano.
-
-
 
 Este informe podría contener más información con
 "Mostrar salida detallada durante la compilación"
 opción habilitada en Archivo -> Preferencias.
+
+       13/05
+
+Si compilo cualquier otro archivo.ino y hay algun error, el error que me tira al terminar de compilar es el error propio más el error antes dicho (el del día 12/05).
+Lo que es bueno es que si al compilar el archivo.ino no hay error, entonces no me hace problema y todo funciona normalmente. 
+Conclusión, nose porque si hay error al compilar me muestra otro error de otro archivo que ni siquiera tengo abierto (y además modifiqué el archivo en donde tuve ese
+problema de forma que al compilarlo el error desaparezca y desapareció, pero aún así al compilar otro archivo me siguen apareciendo los errores)
