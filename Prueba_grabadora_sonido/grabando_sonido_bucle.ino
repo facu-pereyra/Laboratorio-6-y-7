@@ -1,5 +1,6 @@
 /*
 Tiene errores, ver el chat con Roberto o sino la página https://arduino.stackexchange.com/questions/60046/trying-to-save-wav-files-with-new-name-every-loop
+También ver https://forum.arduino.cc/t/recording-audio-film-name-error/564174/4
 
 Cuando lo arregle lo modifico
 */
