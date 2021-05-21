@@ -1,4 +1,4 @@
-Voy a ir subiendo los archivos "grabando_sonidovx" e indicando brevemente que hace:
+Voy a ir subiendo los archivos "grabando_sonidovx"
 
   grabando_sonidov4_2: 
 Empieza a grabar cuando Botonstart==1 y se detiene cuando BotonBreak==1
