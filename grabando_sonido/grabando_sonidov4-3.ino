@@ -7,6 +7,9 @@ Se detiene la grabación cuando:
   Llega a la hora Final indicada
 Graba un solo archivo a la vez o no, depende de si el filename es la fecha u hora
 Entre el comienzo y el final de un nuevo archivo aparece un archivo de 1kb
+
+Importante:
+Tengo que poner los segundos finales porque sino no me corta la grabación. Con los segundos puestos corta a la hora indicada
 */
 
 #include <SD.h>
@@ -20,11 +23,11 @@ TMRpcm audio;   // create an object for use in this sketch
 #define MIC A0
 uint8_t HoraInicio = 12;
 uint8_t MinInicio  = 9;
-uint8_t SecInicio  = 0;
+uint8_t SecInicio  = 0; 
 
 uint8_t HoraFinal = 12;
 uint8_t MinFinal  = 13;
-uint8_t SecFinal  = 0;
+uint8_t SecFinal  = 0; 
 
 uint8_t BotonStart = 2; //Boton de Comienzo: Inicio de Grabación
 uint8_t BotonBreak = 3; //Boton de Interrupción: Cortar Fichero  
