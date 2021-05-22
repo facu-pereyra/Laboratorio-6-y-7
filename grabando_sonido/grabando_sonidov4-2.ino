@@ -1,6 +1,7 @@
 /*
 Empieza a grabar cuando Botonstart==1 y se detiene cuando BotonBreak==1
 Graba un solo archivo a la vez o no, depende de si es fecha u hora
+Entre que termina un archivo y se empieza otro, se crea un archivo .wav que pesa 1kb
 */
 
 #include <SD.h>
