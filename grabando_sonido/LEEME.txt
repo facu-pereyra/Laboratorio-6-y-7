@@ -1,7 +1,9 @@
-Voy a ir subiendo los archivos "grabando_sonidovx"
+Voy a ir subiendo los archivos "grabando_sonidovx" (en los archivos esta comentado al principio lo que hace cada uno):
 
   grabando_sonidov4_2: 
-Empieza a grabar cuando Botonstart==1 y se detiene cuando BotonBreak==1
+Empieza y termina de grabar con condiciones de boton y hora
 Graba un solo archivo a la vez o no, depende de si el filename es fecha u hora.
+
+
 
 
