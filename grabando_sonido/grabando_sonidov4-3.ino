@@ -1,10 +1,10 @@
 /*
 Empieza a grabar cuando:
   Botonstart==1 
-  Llegue a la hora Inicial indicada
+  Llega a la hora Inicial indicada
 Se detiene la grabación cuando:
   BotonBreak==1
-  Llegue a la hora Final indicada
+  Llega a la hora Final indicada
 Graba un solo archivo a la vez o no, depende de si el filename es la fecha u hora
 Entre el comienzo y el final de un nuevo archivo aparece un archivo de 1kb
 */
@@ -94,13 +94,6 @@ void setup() {
 void loop() {
   DateTime now = rtc.now();
   getFileName();
-  
-//  SdFile::dateTimeCallback(dateTime);
- 
-  //DateTime now = rtc.now();
-  //sprintf(timestamp, "%02d:%02d:%02d %2d/%2d/%2d \n", now.hour(),now.minute(),now.second(),now.month(),now.day(),now.year()-2000);
-  //Serial.println("xx");
-  //Serial.println(timestamp);
   
   delay(100);
   if (!digitalRead(BotonStart)||(now.hour()==HoraInicio && now.minute()==MinInicio && now.second()==SecInicio)) { 
