@@ -1,6 +1,6 @@
 //ES UN BORRADOR PARA INTENTAR ESCRIBIR UN CODIGO EN EL QUE SE GUARDE EL ARCHIVO CON FECHA Y HORA. 
 //Voy a partir del codigo grabando_sonidov5_4.ino en el que no se puede guardar la fecha
-//Quiero encontrar una forma de guardar los archivos según la fecha y después para cada archivo de cada fecha correr el código como está 
+//Quiero encontrar una forma de crear archivos según la fecha y después para cada archivo de cada fecha correr el código como está segun la hora
 
 
 //Para ver lo del directorio http://manueldelgadocrespo.blogspot.com/p/lista-de-archivos-sd.html
@@ -71,8 +71,10 @@ void dateTime(uint16_t* date, uint16_t* time) {
 //==============================================================================
 //------------------------------------------------------------------------------
 
-//Quiero encontrar una forma de guardar los archivos según la fecha y después para cada archivo de cada fecha correr el código como está 
-//No se como crear un archivo en la tarjeta SD en el que guarde los distintos horarios
+//Quiero que mi tarjeta SD cree un archivo con cada fecha +
+//Despues necesito que en cada uno de esos archivos se guarde el archivo .wav con el nombre de getFileName
+//Estoy creando una lista de formato txt? con FECHA pero no es un archivo, ver como hacer para que sea un archivo
+
 
 void getDate(){
 
