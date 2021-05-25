@@ -42,6 +42,7 @@ uint8_t RST_PIN = 6;
 unsigned long t; //Variable del millis()
 int SaltoFichero=6000; //Está en milisegundos
 volatile boolean Siguiente = false; //para ir al próximo fichero
+volatile boolean ControladorFinal=false;
 
 char filename[] = "_00000000_000000.wav"; 
 
@@ -112,10 +113,11 @@ void loop() {
     digitalWrite(LED_Error, LOW);
     digitalWrite(LED_Work, HIGH);
     Siguiente=false;
+    ControladorFinal=true;
     audio.startRecording(filename,16000,MIC); //Serial.println("empezó");
     t=millis();
   }
-  if ((millis() - t > SaltoFichero)&&(digitalRead(LED_Work))){        
+  if ((millis() - t > SaltoFichero)&&(ControladorFinal==1)){        
       digitalWrite(LED_Work, LOW);
       //Serial.println("Estoy en el if");
       Siguiente=true;
@@ -125,6 +127,7 @@ void loop() {
        LedFinal();     
        audio.stopRecording(filename); //Serial.println("llegué");
        Siguiente=false;
+       ControladorFinal=false;
        return; 
   }
 } //cierra void loop
