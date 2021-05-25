@@ -7,9 +7,10 @@ Se detiene la grabación cuando:
   Llega a la hora Final indicada
 Graba un solo archivo a la vez o no, depende de si el filename es la fecha u hora
 Entre el comienzo y el final de un nuevo archivo aparece un archivo de 1kb
-  Importante:
-Tengo que poner los segundos finales porque sino no me corta la grabación. Con los segundos puestos corta a la hora indicada
 
+Importante: Tengo que poner los segundos finales porque sino no me corta la grabación. Con los segundos puestos corta a la hora indicada
+
+Hay un salto de fichero si pasa un determinado tiempo, dado por SaltoFichero.
 */
 
 #include <SD.h>
