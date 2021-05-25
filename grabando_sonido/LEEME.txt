@@ -7,6 +7,12 @@ Graba un solo archivo a la vez o no, depende de si el filename es fecha u hora.
   grabando_sonidov4_3:
 Empieza y termina de grabar con condiciones de boton y hora
 Graba un solo archivo a la vez o no, depende de si el filename es fecha u hora.
+  
+  grabando_sonidov5_3(5_4):(EN REVISIÓN)
+Se le agrega el cambio de fichero en una determinada cantidad de tiempo. El problema es que no corta solo,
+es decir, hay que mantener presionado el BotonBreak. VER
+
+ 
 
 
 
