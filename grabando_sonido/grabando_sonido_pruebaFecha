@@ -29,6 +29,9 @@ Puse la condicion de cambio de fichero pero no corta normalmente, entonces no co
 
 #define SD_ChipSelectPin 10  //example uses hardware SS pin 53 on Mega2560
 
+//#define DATA_DIR "GRABACION" // limit 8 characters (8.3 filenmae)
+#define SERIAL_PRINTLN(x) (Serial.println(F(x))) // for decrease RAM usage
+
 TMRpcm audio;   // create an object for use in this sketch 
 #define MIC A0
 //--------------------------------------------------------------------------------------------
@@ -58,6 +61,7 @@ int PARAR;
 
 char filename[] = "_00000000_000000.wav"; 
 
+
 //------------------------------------------------------------------------------------------
 
 //==============================================================================
@@ -75,8 +79,7 @@ void dateTime(uint16_t* date, uint16_t* time) {
 //Despues necesito que en cada uno de esos archivos se guarde el archivo .wav con el nombre de getFileName
 //Estoy creando una lista de formato txt? con FECHA pero no es un archivo, ver como hacer para que sea un archivo
 
-
-void getDate(){
+void DATA_DIR(){
 
  DateTime now = rtc.now();
  char Fecha[] = " ";
@@ -142,11 +145,61 @@ void setup() {
   pinMode(BotonStart, INPUT_PULLUP);
   pinMode(BotonBreak, INPUT_PULLUP);
 }
+
+ // Open serial communications and wait for port to open:
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for native USB port only
+  }
+
+
+  Serial.print("Initializing SD card...");
+
+  // see if the card is present and can be initialized:
+  if (!SD.begin(chipSelect)) {
+    Serial.println("Card failed, or not present");
+    // don't do anything more:
+    while (1);
+  }else {
+    Serial.println("card initialized.");
+    
+    if (SD.mkdir(DATA_DIR))
+    {
+      SERIAL_PRINTLN("dir is created.");
+    }
+    else
+    {
+      SERIAL_PRINTLN("1.dir is exist, or");
+      SERIAL_PRINTLN("2. dir name is invalid, or");
+      SERIAL_PRINTLN("3. parent is not dir, or");
+      SERIAL_PRINTLN("4. parent is already open");
+    }
+  }
+}
+
+
+
 void loop() {
   DateTime now = rtc.now();
   getFileName();
   
-  getDate();
+  char str[] = "";
+  strcat(str, DATA_DIR);
+  strcat(str, "/");
+  strcat(str, "20191213");
+  strcat(str, RECORD_FILE_EXT);
+
+  File dataFile = SD.open(str, FILE_WRITE);
+
+  if (dataFile) {
+    dataFile.println(dataString);
+    dataFile.close();
+    // print to the serial port too:
+    Serial.println(dataString);
+  } else {
+    SERIAL_PRINTLN("error opening dataFile");
+  }
+  delay(1000);
+}
   
   delay(100);
   //while (digitalRead(LED_Work)==1){
