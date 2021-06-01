@@ -13,7 +13,7 @@ Hay un salto de fichero si pasa un determinado tiempo, dado por SaltoFichero.
 Si no tiene la tarjeta SD salta error en bucle LedError (). Cuando se toca el botón para grabar y no tiene la tarjeta SD 
 tambien salta error. 
 No debería saltar error (según como está escrito el código) si se saca la tarjeta mientras se está grabando. Esta parte
-se quiso hacer y pero se arruinó, en dos veces distintas, la tarjeta, por lo que se decistió de seguir probando
+se quiso hacer pero se arruinó la tarjeta en dos veces distintas, por lo que se desistió de seguir probando.
 */
 
 #include <SD.h>
