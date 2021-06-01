@@ -10,6 +10,10 @@ Se le agrega condion de comienzo y finalizacion de grabado a una determinada hor
   grabando_sonidov5_6:
 Se le agrega el cambio de fichero en una determinada cantidad de tiempo. 
 
+  grabando_sonidov6_3:
+Se le agregó el atributo a los archivos que se guardan en la tarjeta SD y que titile
+el led_error (con su posterior reseteo) si no hay tarjeta SD.
+
  
 
 
