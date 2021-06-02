@@ -1,0 +1,83 @@
+//Quiero generar una señal periodica en forma de rampa ("Diente de sierra") que sea propia del sistema y que la lea la tarjeta SD. 
+//Despues quiero poder graficar los datos adquiridos, es decir voltaje vs tiempo, y ver si se pierden puntos 
+
+
+#include <SPI.h>    // incluye libreria interfaz SPI
+#include <SD.h>     // incluye libreria para tarjetas SD
+
+int salida 10    // Slave Select en pin digital 10
+
+//Definimos en un vector los valores que forman la señal diente de sierra
+
+float dienteDeSierra[23] = {0,0.25,0.5,0.75,1,1.25,1.50,1.75,2,2.25,2.5,
+2.75,3,3.25,3.5,3.75,4,4.25,4.5,4.75,5,0,0};
+
+int CicloDeTrabajo;
+
+File archivo;      // objeto archivo del tipo File
+
+void setup() {
+  Serial.begin(9600);    // inicializa monitor serie a 9600 bps
+  Serial.println("Inicializando tarjeta ...");  // texto en ventana de monitor
+  if (!SD.begin(SSpin)) {     // inicializacion de tarjeta SD
+    Serial.println("fallo en inicializacion !");// si falla se muestra texto correspondiente y
+    return;         // se sale del setup() para finalizar el programa
+  }
+  Serial.println("inicializacion correcta");  // texto de inicializacion correcta1
+  
+  archivo = SD.open("datos.txt", FILE_WRITE); // apertura para lectura/escritura de archivo datos.txt
+
+  if (archivo) {  
+    for (int i=0; i < 21; i++){
+    
+      archivo.print(i);       // escribe en tarjeta el valor del indice
+      archivo.print(",");     // escribe en tarjeta una coma
+      archivo.print(CicloDeTrabajo);   // escribe en tarjeta el valor de temperatura
+
+      Serial.print(i);        // escribe en monitor el valor del indice
+      Serial.print(",");      // escribe en monitor una coma
+      Serial.print(CicloDeTrabajo);    // escribe en monitor el valor de temperatura
+
+      delay(1000);        // demora de 1 segundo
+    }
+
+void loop() {
+    //Leemos cada punto de la señal senosoidal
+    for (int i= 0; i < 21;i++){
+         //Convertimos el valor de señal senosoidal a ciclo de trabajo
+          CicloDeTrabajo = (255*dienteDeSierra[i])/5;
+          //Generamos la señal PWM
+          analogWrite(salida,CicloDeTrabajo);
+          //Generamos un delay de 3ms 
+          delay(3);
+    }
+}
+
+
+
+//Este código genera una señal diente de sierra
+//Lo encontré acá http://electronicayprogramacionsv.blogspot.com/p/generador-de-senales-basico-con-arduino.html
+
+//Definimos pin de Salida de nuestro generador de señal.
+
+int salida = 3; //La salida va a ser la salida de la tarjeta SD
+
+//Definimos en un vector los valores que forman la señal diente de sierra
+float dienteDeSierra[23] = {0,0.25,0.5,0.75,1,1.25,1.50,1.75,2,2.25,2.5,
+2.75,3,3.25,3.5,3.75,4,4.25,4.5,4.75,5,0,0};
+int CicloDeTrabajo;
+
+void setup() {
+}
+
+void loop() {
+    //Leemos cada punto de la señal senosoidal
+    for (int i= 0; i < 21;i++){
+         //Convertimos el valor de señal senosoidal a ciclo de trabajo
+          CicloDeTrabajo = (255*dienteDeSierra[i])/5;
+          //Generamos la señal PWM
+          analogWrite(salida,CicloDeTrabajo);
+          //Generamos un delay de 3ms 
+          delay(3);
+    }
+}
