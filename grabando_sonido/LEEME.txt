@@ -1,18 +1,9 @@
-Voy a ir subiendo los archivos "grabando_sonidovx" (en los archivos esta comentado al principio lo que hace cada uno):
+  grabando_sonidov6_2:
+Comienza a grabar cuando se cumple las condiciones de hora o se presiona el botón. Hay un salto de fichero a un tiempo dado. Hay control visual (led encendido) en el momento de la grabación y en el caso de que no haya tarjeta micro SD. Se generan archivos de 1 kb dentro de la memoria SD. Los archivos generados se guardan de la siguiente forma: día+hora+minutos+segundos.wav
 
-  grabando_sonidov4_2: 
-Empieza y termina de grabar con condiciones de boton
-Graba un solo archivo a la vez o no, depende de si el filename es fecha u hora.
-
-  grabando_sonidov4_3:
-Se le agrega condion de comienzo y finalizacion de grabado a una determinada hora.
-
-  grabando_sonidov5_6:
-Se le agrega el cambio de fichero en una determinada cantidad de tiempo. 
 
   grabando_sonidov6_3:
-Se le agregó el atributo a los archivos que se guardan en la tarjeta SD y que titile
-el led_error (con su posterior reseteo) si no hay tarjeta SD.
+Comienza a grabar cuando se cumple las condiciones de hora o se presiona el botón. Hay un salto de fichero a un tiempo dado. Hay control visual (led encendido) en el momento de la grabación y en el caso de que no haya tarjeta micro SD. Se generan archivos de 1 kb dentro de la memoria SD. Los archivos generados se guardan de la siguiente forma: hora+minutos+segundos+i.wav, donde si el fichero generado existe dentro de la memoria, la letra "i" simboliza el número 1,2,...,99 según sea el caso.
 
  
 
