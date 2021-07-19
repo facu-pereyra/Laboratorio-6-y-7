@@ -11,8 +11,7 @@ Se detiene la grabación cuando:
   El nombre del archivo está compuesto por la hora, y al final dos dígitos 0 (ejemplo: 15:52:05 --> 15520500.wav) en el caso
 de que el fichero no exista en la memoria SD. Si dicho archivo existe, se le coloca al final del nombre el dígito 1, 2 y 
 así segun corresponda (ejemplo 15520500 -->15520501) 
-  Si no tiene la tarjeta SD salta error en bucle LedError (). Cuando se toca el botón para grabar y no tiene la tarjeta SD 
-tambien salta error. 
+  Cuando se toca el botón para grabar y no tiene la tarjeta SD salta error en bucle LedError ().
 */
 
 #include <SD.h>
