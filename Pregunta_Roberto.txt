@@ -1,5 +1,7 @@
-Preguntas para Roberto:
+Preguntas/dudas escenciales (algunas son para Roberto):
 
-1) 
+1) Cómo hacer para que en el código se incluyan distintas horas de inicio y final de grabación, para
+que el inicio_A corresponda a la condición corte_A y no a la condición corte_B. La idea inicial puede 
+ser estilo python como una lista donde se incluyen las horas de inicio o corte de grabación. VER
 
 2)
