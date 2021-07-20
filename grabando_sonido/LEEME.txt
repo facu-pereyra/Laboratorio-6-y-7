@@ -9,7 +9,8 @@ Los archivos generados se guardan de la siguiente forma: día+hora+minutos+segun
 Comienza a grabar cuando se cumple las condiciones de hora o se presiona el botón. Hay un salto de fichero a un tiempo dado.
 Hay control visual (led encendido) en el momento de la grabación y en el caso de que no haya tarjeta micro SD.
 Se generan archivos de 1 kb dentro de la memoria SD. 
-Los archivos generados se guardan de la siguiente forma: hora+minutos+segundos+i.wav, donde si el fichero generado existe dentro de la memoria, la letra "i" simboliza el número 1,2,...,99 según sea el caso.
+Los archivos generados se guardan de la siguiente forma: hora+minutos+segundos+i.wav, donde si el fichero generado existe 
+dentro de la memoria, la letra "i" simboliza el número 1,2,...,99 según sea el caso.
 
  
 
