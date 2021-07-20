@@ -2,6 +2,8 @@ Preguntas/dudas escenciales (algunas son para Roberto):
 
 1) Cómo hacer para que en el código se incluyan distintas horas de inicio y final de grabación, para
 que el inicio_A corresponda a la condición corte_A y no a la condición corte_B. La idea inicial puede 
-ser estilo python como una lista donde se incluyen las horas de inicio o corte de grabación. VER
+ser una lista estilo python donde se incluyen las horas de inicio o corte de grabación. VER
 
-2)
+2) La creación de archivos de 1 kb no consumen memoria en la tarjeta micro SD pero si se utiliza la forma 
+de guardado de archivo cuyo nombre es: hora+minutos+segundos+i.wav, el nombre de ese archivo puede tener
+el nombre del fichero que de verdad importa (el que tiene la grabación del chingolo) 
