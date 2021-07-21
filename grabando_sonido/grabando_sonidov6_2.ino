@@ -67,7 +67,7 @@ void getFileName(){
 //==============================================================================
 void LedError() {
   digitalWrite(LED_Work, LOW);  //apago LED de trabajo
-  for (int i = 1; i < 6; i++) { // parpadea el de error
+  for (int j = 1; j < 6; j++) { // parpadea el de error
     digitalWrite(LED_Error, HIGH);
     delay(1000);
     digitalWrite(LED_Error, LOW);
