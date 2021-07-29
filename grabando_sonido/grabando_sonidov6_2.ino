@@ -5,14 +5,13 @@ Empieza a grabar cuando:
 Se detiene la grabación cuando:
   BotonBreak==1
   Llega a la hora Final indicada
-Graba un solo archivo a la vez o no, depende de si el filename es la fecha u hora
-Entre el comienzo y el final de un nuevo archivo aparece un archivo de 1kb
-Importante: Tengo que poner los segundos finales porque sino no me corta la grabación. Con los segundos puestos corta a la hora indicada
-Hay un salto de fichero si pasa un determinado tiempo, dado por SaltoFichero.
+Hay un salto de fichero si pasa un determinado tiempo, dado por "SaltoFichero". Para modificar el tamaño (en segundos) del fichero, se puede cambiar la variable "duracion".
+La variable "siguiente" se utiliza para que cuando se llega al tiempo de SaltoFichero el programa para de grabar y automaticamente comienza un nuevo fichero.
+La variable "ControladorFinal" no se puede tocar ya que sino no funciona el salto de fichero.
+La frecuencia de muestreo se cambia con la variable "freq_muestreo".
 
-Cuando se toca el botón para grabar y no tiene la tarjeta SD salta error en bucle LedError ().
-No debería saltar error (según como está escrito el código) si se saca la tarjeta mientras se está grabando. Esta parte
-se quiso hacer pero se arruinó la tarjeta en dos veces distintas, por lo que se desistió de seguir probando.
+Cuando se toca el botón para grabar y no tiene la tarjeta SD salta error (titila 6 veces el led ROJO). 
+WARNING: EVITAR SACAR LA TARJETA MICRO SD PARA QUE NO SE ROMPA Y PREVENIR MAL FUNCIONAMIENTO DE LA MISMA.
 */
 
 #include <SD.h>
@@ -41,12 +40,16 @@ uint8_t LED_Error = 4; //si parpadea hubo error, si está encendido es que se ma
 uint8_t LED_Work  = 7; //cuando está grabando está encendido
 uint8_t RST_PIN = 6;
 
+unsigned long freq_muestreo = 25000; //Está en Hertz
 unsigned long t; //Variable del millis()
-int SaltoFichero=6000; //Está en milisegundos
+uint8_t Duracion = 1; //Está en minutos
+
+
 volatile boolean Siguiente = false; //para ir al próximo fichero
 volatile boolean ControladorFinal=false;
 
 char filename[] = "_00000000_000000.wav"; 
+unsigned long SaltoFichero = Duracion * 60000; //60 seg * 1000 (mili) = 60000 milisegundos
 
 //------------------------------------------------------------------------------------------
 //==============================================================================
@@ -85,10 +88,8 @@ void LedFinal(){
   digitalWrite(LED_Work,   LOW);
 }
 //==============================================================================
-void setup() {
-    pinMode(12,OUTPUT);  
+void setup() {  
     rtc.begin();
-    Serial.begin(9600);
   if (rtc.lostPower()) {
     // following line sets the RTC to the date & time this sketch was compiled (setea el dia y hora de la compu)
     rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
@@ -96,11 +97,7 @@ void setup() {
     // January 21, 2014 at 3am you would call:
     // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0)); Esta linea es para ajustar de forma manual el día y hora
    } 
-  
-    //if (!SD.begin(SD_ChipSelectPin)) LedError();
-  
-  // The audio library needs to know which CS pin to use for recording
-  audio.CSPin = SD_ChipSelectPin;
+  audio.CSPin = SD_ChipSelectPin; // The audio library needs to know which CS pin to use for recording
   pinMode(MIC, INPUT);  // Microphone
   pinMode(LED_Error, OUTPUT);
   pinMode(LED_Work, OUTPUT); 
@@ -108,9 +105,7 @@ void setup() {
   pinMode(BotonBreak, INPUT_PULLUP);
 }
 void loop() {
-  DateTime now = rtc.now();
-  getFileName();
-  delay(100);
+  DateTime now = rtc.now();  
   if (!digitalRead(BotonStart)||(Siguiente==1)||(now.hour()==HoraInicio && now.minute()==MinInicio && now.second()==SecInicio)) { 
     if (!SD.begin(SD_ChipSelectPin)) LedError();
     digitalWrite(LED_Error, LOW);
@@ -118,18 +113,18 @@ void loop() {
     Siguiente=false;
     ControladorFinal=true;
     SdFile::dateTimeCallback(dateTime); //Para poner los atributos en el archivo guardado
-    audio.startRecording(filename,16000,MIC); //Serial.println("empezó");
+    getFileName();
+    audio.startRecording(filename,freq_muestreo,MIC);
     t=millis();
   }
   if ((millis() - t > SaltoFichero)&&(ControladorFinal==1)){        
       digitalWrite(LED_Work, LOW);
-      //Serial.println("Estoy en el if");
       Siguiente=true;
-      audio.stopRecording(filename);      
+      audio.stopRecording(filename);
   }   
   else if (!digitalRead(BotonBreak)||(now.hour()==HoraFinal && now.minute()==MinFinal && now.second()==SecFinal)){      
        LedFinal();     
-       audio.stopRecording(filename); //Serial.println("llegué");
+       audio.stopRecording(filename);
        Siguiente=false;
        ControladorFinal=false;
        return; 
