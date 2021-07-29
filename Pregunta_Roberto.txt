@@ -6,12 +6,12 @@ ser una lista estilo python donde se incluyen las horas de inicio o corte de gra
 
 2) La creación de archivos de 1 kb no consumen memoria en la tarjeta micro SD, pero si se utiliza la forma 
 de guardado de archivo cuyo nombre es: hora+minutos+segundos+i.wav, el nombre de ese archivo puede tener
-el nombre del fichero que de verdad importa (el que tiene la grabación del chingolo) por lo que en vez de i=0
+el nombre del fichero que de verdad importa (el que tiene la grabación del chingolo) por lo que en vez de i=0         ---------------------> SOLUCIONADO
 va a ser i=1 y entonces la cantidad de días que se puede dejar la grabadora en el campo será menor a 99 días.
 
 3) Hay consumo de batería desparejo,
 stan by 1: 75 mA aprox
-grabando: 36/30 mA
+grabando: 36/30 mA                           ---------------------> SOLUCIONADO
 stan by 2: 26 mA
 VER CAUSA.
 
