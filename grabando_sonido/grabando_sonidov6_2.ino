@@ -9,6 +9,7 @@ Hay un salto de fichero si pasa un determinado tiempo, dado por "SaltoFichero". 
 La variable "siguiente" se utiliza para que cuando se llega al tiempo de SaltoFichero el programa para de grabar y automaticamente comienza un nuevo fichero.
 La variable "ControladorFinal" no se puede tocar ya que sino no funciona el salto de fichero.
 La frecuencia de muestreo se cambia con la variable "freq_muestreo".
+Se puede grabar hasta 1 mes sin que se sobreescriban los archivos en la tarjeta micro SD
 
 Cuando se toca el botón para grabar y no tiene la tarjeta SD salta error (titila 6 veces el led ROJO). 
 WARNING: EVITAR SACAR LA TARJETA MICRO SD PARA QUE NO SE ROMPA Y PREVENIR MAL FUNCIONAMIENTO DE LA MISMA.
