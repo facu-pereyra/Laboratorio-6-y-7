@@ -1,10 +1,10 @@
-  version1:
+  version_1:
 Comienza a grabar cuando se cumple las condiciones de hora (pueden ser varias) o se presiona el botón. Hay un salto de fichero a un tiempo dado.
 Hay control visual (led encendido) en el momento de la grabación y en el caso de que no haya tarjeta micro SD.
 Los archivos generados se guardan de la siguiente forma: día+hora+minutos+segundos.wav
 
 
-  version2:
+  version_2:
 Comienza a grabar cuando se cumple las condiciones de hora (pueden ser varias) o se presiona el botón. Hay un salto de fichero a un tiempo dado.
 Hay control visual (led encendido) en el momento de la grabación y en el caso de que no haya tarjeta micro SD.
 Los archivos generados se guardan de la siguiente forma: hora+minutos+segundos+i.wav, donde si el fichero generado existe 
