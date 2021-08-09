@@ -33,7 +33,7 @@ TMRpcm audio;   // create an object for use in this sketch
 // Variables que se pueden modificar
 
 unsigned long freq_muestreo = 22000; //Frecuencia de muestreo en Hertz
-uint8_t Duracion = 1; //Duracion de los ficheros, esta en Hertz
+uint8_t Duracion = 1; //Duracion de los ficheros, esta en minutos
 
 uint8_t HoraInicio_1 = 3;
 uint8_t MinInicio_1 = 0;
