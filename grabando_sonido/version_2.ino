@@ -18,7 +18,7 @@ así segun corresponda (ejemplo 15520500 -->15520501).
 
 Entre que para de grabar y comienza un nuevo fichero hay unos segundos que se pierden (entre 2 a 5), esto se debe a que 
 por como está escrito el código, la grabación se demora al iniciar (esa línea de código es necesaria para que 
-se puedan crear 99 ficheros en vez de 30 en la memoria SD).
+se puedan crear, en la memoria SD, 99 ficheros en vez de 30).
 
 Cuando se toca el botón para grabar y no tiene la tarjeta SD salta error (titila 6 veces el led ROJO). 
 WARNING: EVITAR SACAR LA TARJETA MICRO SD PARA QUE NO SE ROMPA Y PREVENIR MAL FUNCIONAMIENTO DE LA MISMA.
