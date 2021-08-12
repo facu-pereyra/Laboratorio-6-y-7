@@ -33,40 +33,42 @@ TMRpcm audio;   // create an object for use in this sketch
 // Variables que se pueden modificar
 
 unsigned long freq_muestreo = 22000; //Frecuencia de muestreo en Hertz
-uint8_t Duracion = 1; //Duracion de los ficheros, esta en minutos
+uint8_t Duracion = 5; //Duracion de los ficheros, esta en minutos
 
-uint8_t HoraInicio_1 = 3;
+uint8_t HoraInicio_1 = 8;
 uint8_t MinInicio_1 = 0;
 uint8_t SecInicio_1 = 0;
 
-uint8_t HoraFinal_1 = 3;
-uint8_t MinFinal_1 = 2;
+uint8_t HoraFinal_1 = 10;
+uint8_t MinFinal_1 = 0;
 uint8_t SecFinal_1 = 0;
 
-uint8_t HoraInicio_2 = 3;
-uint8_t MinInicio_2 = 4;
+uint8_t HoraInicio_2 = 14;
+uint8_t MinInicio_2 = 0;
 uint8_t SecInicio_2 = 0;
 
-uint8_t HoraFinal_2 = 3;
-uint8_t MinFinal_2 = 5;
+uint8_t HoraFinal_2 = 18;
+uint8_t MinFinal_2 = 0;
 uint8_t SecFinal_2 = 0;
 
-uint8_t HoraInicio_3 = 6;
-uint8_t MinInicio_3 = 0;
-uint8_t SecInicio_3 = 0;
+//uint8_t HoraInicio_3 = 6;
+//uint8_t MinInicio_3 = 0;
+//uint8_t SecInicio_3 = 0;
 
-uint8_t HoraFinal_3 = 7;
-uint8_t MinFinal_3 = 0;
-uint8_t SecFinal_3 = 0;
+//uint8_t HoraFinal_3 = 7;
+//uint8_t MinFinal_3 = 0;
+//uint8_t SecFinal_3 = 0;
 
 
 //--------------------------------------------------------------------------------------------
 //Defino variables
 
-uint8_t BotonStart = 2; //Boton de Comienzo: Inicio de Grabación
-uint8_t BotonBreak = 3; //Boton de Interrupción: Cortar Fichero  
+uint8_t LED_Work  = 2; //cuando está grabando está encendido
+uint8_t BotonStart = 3; //Boton de Comienzo: Inicio de Grabación
+  
 uint8_t LED_Error = 4; //si parpadea hubo error, si está encendido es que se mandó a Detener
-uint8_t LED_Work  = 7; //cuando está grabando está encendido
+uint8_t BotonBreak = 5; //Boton de Interrupción: Cortar Fichero
+
 uint8_t RST_PIN = 6;
 
 unsigned long t; //Variable del millis()
@@ -123,13 +125,14 @@ void LedFinal(){
 //==============================================================================
 void setup() {  
     rtc.begin();
+    Serial.begin(9600);
   if (rtc.lostPower()) {
     // following line sets the RTC to the date & time this sketch was compiled (setea el dia y hora de la compu)
     rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
     // This line sets the RTC with an explicit date & time, for example to set
     // January 21, 2014 at 3am you would call:
-    //rtc.adjust(DateTime(2021, 7, 25, 2, 59, 0));// Esta linea es para ajustar de forma manual el día y hora
-   } 
+    //rtc.adjust(DateTime(2021, 7, 25, 17, 58, 0));// Esta linea es para ajustar de forma manual el día y hora
+  } 
   audio.CSPin = SD_ChipSelectPin; // The audio library needs to know which CS pin to use for recording
   pinMode(MIC, INPUT);  // Microphone
   pinMode(LED_Error, OUTPUT);
@@ -139,6 +142,9 @@ void setup() {
 }
 void loop() {
   DateTime now = rtc.now();
+  //digitalWrite(LED_Work, HIGH);
+  //digitalWrite(LED_Error, HIGH);
+
   if (((MinInicio_1-now.minute())==1)||((MinInicio_1-now.minute())==(-59))&&((HoraInicio_1-now.hour())==1)){
      HoraInicio=HoraInicio_1;
      MinInicio=MinInicio_1;
@@ -148,7 +154,16 @@ void loop() {
      MinFinal=MinFinal_1;
      SecFinal=SecFinal_1;
    }
-   else if(((MinInicio_2-now.minute())==1)||((MinInicio_2-now.minute())==(-59))&&((HoraInicio_2-now.hour())==1)){
+   if(((now.hour()>=(HoraInicio_1)))&&((now.hour()<=(HoraFinal_1)))) {
+    HoraInicio=HoraInicio_1;
+     MinInicio=MinInicio_1;
+     SecInicio=SecInicio_1;
+      
+     HoraFinal=HoraFinal_1;
+     MinFinal=MinFinal_1;
+     SecFinal=SecFinal_1;
+   }
+   if(((MinInicio_2-now.minute())==1)||((MinInicio_2-now.minute())==(-59))&&((HoraInicio_2-now.hour())==1)){
      HoraInicio=HoraInicio_2;
      MinInicio=MinInicio_2;
      SecInicio=SecInicio_2;
@@ -157,33 +172,46 @@ void loop() {
      MinFinal=MinFinal_2;
      SecFinal=SecFinal_2;
    }
-   else if(((MinInicio_3-now.minute())==1)||((MinInicio_3-now.minute())==(-59))&&((HoraInicio_3-now.hour())==1)){
-     HoraInicio=HoraInicio_3;
-     MinInicio=MinInicio_3;
-     SecInicio=SecInicio_3;
-     
-     HoraFinal=HoraFinal_3;
-     MinFinal=MinFinal_3;
-     SecFinal=SecFinal_3;
-   }  
+  if(((now.hour()>=(HoraInicio_2)))&&((now.hour()<=(HoraFinal_2)))) {
+    HoraInicio=HoraInicio_2;
+     MinInicio=MinInicio_2;
+     SecInicio=SecInicio_2;
+      
+     HoraFinal=HoraFinal_2;
+     MinFinal=MinFinal_2;
+     SecFinal=SecFinal_2;
+   }
+//   else if(((MinInicio_3-now.minute())==1)||((MinInicio_3-now.minute())==(-59))&&((HoraInicio_3-now.hour())==1)){
+//     HoraInicio=HoraInicio_3;
+//     MinInicio=MinInicio_3;
+//     SecInicio=SecInicio_3;
+//     
+//     HoraFinal=HoraFinal_3;
+//     MinFinal=MinFinal_3;
+//     SecFinal=SecFinal_3;
+//   }
+    Serial.print(now.minute()); Serial.print(":"); Serial.println(now.second());      
   if (!digitalRead(BotonStart)||(Siguiente==1)||(now.hour()==HoraInicio && now.minute()==MinInicio && now.second()==SecInicio)) { 
     if (!SD.begin(SD_ChipSelectPin)) LedError();
-    digitalWrite(LED_Work, HIGH);
+    Serial.print("Antes de getFile: ");Serial.print(now.minute()); Serial.print(":"); Serial.println(now.second());    
+    getFileName();    
+    SdFile::dateTimeCallback(dateTime); //Para poner los atributos en el archivo guardado
+    audio.startRecording(filename,freq_muestreo,MIC);
+    Serial.print("Despues de startRecord: ");Serial.print(now.minute()); Serial.print(":"); Serial.println(now.second());    
+    t=millis();
     Siguiente=false;
     ControladorFinal=true;
-    SdFile::dateTimeCallback(dateTime); //Para poner los atributos en el archivo guardado
-    getFileName();
-    audio.startRecording(filename,freq_muestreo,MIC);
-    t=millis();
+    digitalWrite(LED_Work, HIGH);
   }
   if ((millis() - t > SaltoFichero)&&(ControladorFinal==1)){        
       digitalWrite(LED_Work, LOW);
       Siguiente=true;
       audio.stopRecording(filename);
   }   
-  else if (!digitalRead(BotonBreak)||(now.hour()==HoraFinal && now.minute()==MinFinal && now.second()==SecFinal)){      
-       LedFinal();     
+  else if (!digitalRead(BotonBreak)||(now.hour()==HoraFinal && now.minute()==MinFinal && now.second()==SecFinal)){           
        audio.stopRecording(filename);
+       Serial.print("Despues de stopRecord: ");Serial.print(now.minute()); Serial.print(":"); Serial.println(now.second());    
+       LedFinal();
        Siguiente=false;
        ControladorFinal=false;
        return; 
