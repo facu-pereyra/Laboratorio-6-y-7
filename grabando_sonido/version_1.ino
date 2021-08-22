@@ -12,7 +12,7 @@
 *La variable "siguiente" se utiliza para que cuando se llega al tiempo de SaltoFichero el programa para de
  grabar y automaticamente comienza un nuevo fichero.
 
-*La variable "ControladorFinal" no se puede tocar ya que sino no funciona el salto de fichero ni para de grabar.
+*La variable "ControladorFinal" no se puede tocar ya que no para la grabación ni tampoco funciona el salto de fichero.
 
 *Si se empieza a grabar antes de la hora de inicio, la grabación para 2 segundos antes del inicio automático
  ya que sino se produce error.
