@@ -142,8 +142,8 @@ time_t t = RTC.get();
               //if(HORA >= 24){
               //  HORA = HORA - 24
               //}
-              //RTC.setAlarm(ALM1_MATCH_HOURS , 0, minute(t)+2, HORA, 0);  // Son a los 6 minutos desde que inició la alarma
-              RTC.setAlarm(ALM1_MATCH_HOURS , 0, minute(t)+2, hour(t), 0);  // Son a los 6 minutos desde que inició la alarma              
+              //RTC.setAlarm(ALM1_MATCH_HOURS , 0, minute(t)+2, HORA, 0);  
+              RTC.setAlarm(ALM1_MATCH_HOURS , 0, minute(t)+2, hour(t), 0); 
               RTC.alarm(ALARM_1); // clear the alarm flag
             }
             if((hour(t) >= HoraDormir)&&(hour(t) < HoraInicio)){
