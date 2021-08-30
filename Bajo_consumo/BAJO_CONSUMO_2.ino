@@ -2,8 +2,8 @@
 *********************************
 * El Arduino EMPIEZA DORMIDO. *
 *********************************
-* Alarma 1 da el inicio de grabación y la alarma 2 da el corte
-* Hay salto de fichero
+* Alarma 1 da el inicio de grabación y la finaliza a una hora dada
+* NO Hay salto de fichero
 
 
 */
