@@ -2,8 +2,9 @@
 *********************************
 * El Arduino EMPIEZA DESPIERTO. *
 *********************************
-* Alarma 1 da el inicio de grabación y la alarma 2 da el corte
-* Hay salto de fichero
+* Hay 2 alarmas, la Alarma_1 da el inicio de la grabación y la Alarma_2 da el corte. 
+* Dada una hora (HoraDormir) el arduino duerme y despierta a la HoraInicio por medio de la Alarma_1.
+* Hay salto de fichero dado por la variable SaltoFichero, donde la duración de cada fichero lo da la variable Duración.
 
 
 */
