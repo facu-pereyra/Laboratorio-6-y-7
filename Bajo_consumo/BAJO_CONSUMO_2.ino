@@ -29,15 +29,11 @@ uint8_t RST_PIN = 4;
 uint8_t LED_Error = 6;
 uint8_t LED_Work = 7;
 uint8_t LED_Control = 8;
-
-volatile boolean Siguiente = true; //para ir al próximo fichero
-//unsigned long tiempo_fichero; //Variable del millis()
-
 //------------------------------------------
-uint8_t HoraInicio;
-uint8_t MinInicio;
+uint8_t HoraInicio = 7;
+uint8_t MinInicio = 9;
 
-uint8_t HoraDormir = 21;
+uint8_t HoraDormir = 20;
 uint8_t MinDormir = 0;
 //-----------------------------------------
 //------------------------------------------------------------------------------
@@ -84,9 +80,9 @@ void setup() {
     pinMode(interruptPin,INPUT_PULLUP);//Set pin d2 to input using the buildin pullup resistor
     audio.CSPin = SD_ChipSelectPin; // The audio library needs to know which CS pin to use for recording
     pinMode(MIC, INPUT);  // Microphone
-    pinMode(5, INPUT_PULLUP);
+    //pinMode(5, INPUT_PULLUP);
 
-    
+    /*
     //Poner en hora el reloj
     tmElements_t tm;
     tm.Hour = 19;               // set the RTC to an arbitrary time
@@ -96,34 +92,27 @@ void setup() {
     tm.Month = 8;
     tm.Year = 2021 - 1970;      // tmElements_t.Year is the offset from 1970
     RTC.write(tm);              // set the RTC from the tm structure
-    
+    */
     
     // initialize the alarms to known values, clear the alarm flags, clear the alarm interrupt flags
     RTC.setAlarm(ALM1_MATCH_DATE, 0, 0, 0, 1);
-    RTC.setAlarm(ALM2_MATCH_DATE, 0, 0, 0, 1);
     RTC.alarm(ALARM_1);
-    //RTC.alarm(ALARM_2);
     RTC.alarmInterrupt(ALARM_1, false);
-    //RTC.alarmInterrupt(ALARM_2, false);
     RTC.squareWave(SQWAVE_NONE);
 
     
     time_t t; //create a temporary time variable so we can set the time and read the time from the RTC
     t=RTC.get();//Gets the current time of the RTC
-    RTC.setAlarm(ALM1_MATCH_HOURS , 0, 1, 19, 0);  //Se setea la Hora de inicio  
-    //RTC.setAlarm(ALM2_MATCH_HOURS, 0,  22, 18, 0);  //Se pone la hora del primer corte de grabacion
+    RTC.setAlarm(ALM1_MATCH_HOURS , 0, MinInicio, HoraInicio, 0);  //Se setea la Hora de inicio 
     RTC.alarm(ALARM_1); // clear the alarm flag
-    //RTC.alarm(ALARM_2);                 // ensure RTC interrupt flag is cleared
     RTC.squareWave(SQWAVE_NONE); // configure the INT/SQW pin for "interrupt" operation (disable square wave output)
-    RTC.alarmInterrupt(ALARM_1, true); // enable interrupt output for Alarm 1            
-    //RTC.alarmInterrupt(ALARM_2, true);
+    RTC.alarmInterrupt(ALARM_1, true); // enable interrupt output for Alarm 1       
  
 }
 
 void loop() {
   time_t t = RTC.get();
   Dormir();  
-// check to see if the INT/SQW pin is low, i.e. an alarm has occurred
   if (RTC.alarm(ALARM_1)){             // resets the alarm flag if set. Acá va el || Siguen
    if ((hour(t) < HoraDormir)&&(hour(t) >= HoraInicio)){ 
     if (!SD.begin(SD_ChipSelectPin)) LedError();    
@@ -131,34 +120,24 @@ void loop() {
     audio.startRecording(filename,22000,MIC);
     digitalWrite(LED_Work,HIGH);
     digitalWrite(LED_Control,LOW);
-    //delay(2000)  
-    //Serial.println("grabando");
     while(1){
       int i;  
-      t=RTC.get();      
-      //Serial.println("En el while");
-      if((hour(t)==19 && minute(t)==3)||(hour(t)==19 && minute(t)==5)|| digitalRead(5)==0){
+      t=RTC.get(); 
+      if((hour(t)==9 && minute(t)==0)||(hour(t)==19 && minute(t)==0)){
         audio.stopRecording(filename);
         digitalWrite(LED_Work,LOW);
-        //digitalWrite(LED_Control,HIGH);
-        //sleep_enable();//Enabling sleep mode
-        //attachInterrupt(0, wakeUp, LOW);//attaching a interrupt to pin d2
-        //set_sleep_mode(SLEEP_MODE_PWR_DOWN);//Setting the sleep mode, in our case full sleep
-        //HORA=hour(t)+10
-        //if(HORA >= 24){
-        //  HORA = HORA - 24
-        //}
-        //RTC.setAlarm(ALM1_MATCH_HOURS , 0, minute(t)+2, HORA, 0);
-        RTC.setAlarm(ALM1_MATCH_HOURS , 0, minute(t)+1, hour(t), 0);              
+        HORA=hour(t)+8
+        if(HORA >= 24){
+          HORA = HORA - 24
+        }
+        RTC.setAlarm(ALM1_MATCH_HOURS , 0, 0, HORA, 0);
+        //RTC.setAlarm(ALM1_MATCH_HOURS , 0, minute(t)+1, hour(t), 0);              
         RTC.alarm(ALARM_1); // clear the alarm flag
-        //delay(500); //wait a second to allow the led to be turned off before going to sleep
-        //sleep_cpu();//activating sleep mode      
-        //Serial.println("antes del break");
         break;
       } 
       i++;
     }
-   }   
+   }  
    else if((hour(t) >= HoraDormir)&&(HoraInicio > hour(t))){ 
     RTC.setAlarm(ALM1_MATCH_HOURS , 0, MinInicio, HoraInicio, 0);              
     RTC.alarm(ALARM_1); // clear the alarm flag
