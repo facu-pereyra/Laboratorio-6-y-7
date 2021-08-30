@@ -2,9 +2,9 @@
 *********************************
 * El Arduino EMPIEZA DORMIDO. *
 *********************************
-* Alarma 1 da el inicio de grabación y la finaliza a una hora dada
+* La Alarma_1 da el inicio de la grabación y al llegar a una hora definida se produce el corte. 
+* Se puede grabar desde una hora inicial hasta la hora de dormir.
 * NO Hay salto de fichero
-
 
 */
 
@@ -122,10 +122,10 @@ void setup() {
 
 void loop() {
   time_t t = RTC.get();
-    
+  Dormir();  
 // check to see if the INT/SQW pin is low, i.e. an alarm has occurred
   if (RTC.alarm(ALARM_1)){             // resets the alarm flag if set. Acá va el || Siguen
-   if ((hour(t) < HoraDormir)&&(hour(t) > HoraInicio)){ 
+   if ((hour(t) < HoraDormir)&&(hour(t) >= HoraInicio)){ 
     if (!SD.begin(SD_ChipSelectPin)) LedError();    
     getFileName();    
     audio.startRecording(filename,22000,MIC);
@@ -159,6 +159,10 @@ void loop() {
       i++;
     }
    }   
+   else if((hour(t) >= HoraDormir)&&(HoraInicio > hour(t))){ 
+    RTC.setAlarm(ALM1_MATCH_HOURS , 0, MinInicio, HoraInicio, 0);              
+    RTC.alarm(ALARM_1); // clear the alarm flag
+   }
   }   
 }
 //-------------------------
