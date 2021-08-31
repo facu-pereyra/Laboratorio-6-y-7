@@ -129,7 +129,7 @@ time_t t = RTC.get();
     if (!digitalRead(RTC_INT_PIN)){
         if (RTC.alarm(ALARM_1)){             // resets the alarm flag if set. Acá va el || Siguente
             if ((hour(t) < HoraDormir)&&(hour(t) > HoraInicio)){            
-              delay(500);
+              delay(500); // Para que cuando ocurra la transición dormir-grabar no haya ningún error
               if (!SD.begin(SD_ChipSelectPin)) LedError();
               getFileName();    
               audio.startRecording(filename,22000,MIC);
