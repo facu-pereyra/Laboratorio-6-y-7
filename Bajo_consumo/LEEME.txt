@@ -1,3 +1,0 @@
-BAJO_CONSUMO_1 : Empieza SIN DORMIR y utiliza 2 Alarmas. TIENE de fichero medido en segundos.
-
-BAJO_CONSUMO_2 : Empieza dormido y utiliza 1 Alarma. NO TIENE salto de fichero
