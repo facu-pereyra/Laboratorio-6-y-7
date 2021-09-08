@@ -27,10 +27,10 @@ TMRpcm audio;
 uint8_t Duracion = 15; //Duracion de los ficheros, esta en minutos
 uint8_t FreqMuestreo = 22000; //Frecuencia de muestreo
 
-uint8_t HoraInicio = 8;
+uint8_t HoraInicio = 8; //Empieza a grabar a esta hora y termina 2 horas despues. A las 7 horas se repite el proceso
 uint8_t MinInicio = 1;
 
-uint8_t HoraDormir = 21;
+uint8_t HoraDormir = 21; //A partir de esta hora hasta la HoraInicio el Arduino está dormido
 uint8_t MinDormir = 0;
 //==============================================================================
 char filename[] = "00000000.wav"; 
