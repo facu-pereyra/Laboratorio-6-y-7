@@ -165,16 +165,13 @@ void loop() {
       t=RTC.get();
       tiempo_fichero = millis();
       HORA=hour(t)+7;
+      MIN=0;
       //Serial.print("HORA antes del primer if: "); Serial.println(HORA);
       if(HORA >= 24){
         HORA = HORA - 24;
       }
       //Serial.print("HORA despues del primer if: "); Serial.println(HORA);
-      if( HORA < HoraDormir && HORA >= HoraInicio){
-        HORA=HORA;
-        MIN=0;
-      }
-      else if (HORA >= HoraDormir || HORA < HoraInicio){
+      if (HORA >= HoraDormir || HORA < HoraInicio){
         HORA=HoraInicio;
         MIN=MinInicio;
       }
@@ -215,14 +212,11 @@ void Dormir_Alarma2(){
   time_t t;
   t=RTC.get();
   HORA_2=hour(t)+7;
+  MIN_2=0;
   if(HORA_2 >= 24){
     HORA_2 = HORA_2 - 24;
   }
-  if( HORA_2 < HoraDormir && HORA_2 >= HoraInicio){
-    HORA_2=HORA_2;
-    MIN_2=0;
-  }
-  else if (HORA_2 >= HoraDormir || HORA_2 < HoraInicio){
+  if (HORA_2 >= HoraDormir || HORA_2 < HoraInicio){
     HORA_2=(HoraInicio + 2);
     MIN_2=MinInicio;
   }
