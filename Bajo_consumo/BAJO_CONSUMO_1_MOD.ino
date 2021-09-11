@@ -25,7 +25,7 @@ TMRpcm audio;
 //Configurable
 
 uint8_t Duracion = 15; //Duracion de los ficheros, esta en minutos
-uint8_t FreqMuestreo = 22000; //Frecuencia de muestreo
+uint16_t FreqMuestreo = 22000; //Frecuencia de muestreo
 
 uint8_t HoraInicio = 8; //Empieza a grabar a esta hora y termina 2 horas despues. A las 7 horas se repite el proceso
 uint8_t MinInicio = 1;
@@ -34,13 +34,10 @@ uint8_t HoraDormir = 21; //A partir de esta hora hasta la HoraInicio el Arduino 
 uint8_t MinDormir = 0;
 //==============================================================================
 char filename[] = "00000000.wav"; 
-char timestamp[32]; //VER
-
 
 uint8_t RST_PIN = 4;
 uint8_t LED_Error = 6;
 uint8_t LED_Work = 7;
-//uint8_t LED_Control = 8;
 
 volatile boolean Siguiente = false; //para ir al próximo fichero
 unsigned long tiempo_fichero; //Variable del millis()
@@ -74,8 +71,8 @@ void LedError() {
     digitalWrite(LED_Error, LOW);
     delay(1000);      
   }
-  pinMode(RST_PIN,  OUTPUT);
-  digitalWrite(RST_PIN, LOW);
+  //pinMode(RST_PIN,  OUTPUT);
+  //digitalWrite(RST_PIN, LOW);
 }
 //==============================================================================
 void wakeUp(){
@@ -84,67 +81,49 @@ void wakeUp(){
 }
 //==============================================================================
 void setup() {
-	  rtc.begin();
-	  DateTime now = rtc.now();
-
-    //Serial.begin(9600);
-    pinMode(interruptPin, INPUT_PULLUP);
-    pinMode(LED_Work,OUTPUT);
-    pinMode(LED_Error,OUTPUT);
-    //pinMode(LED_Control,OUTPUT);
-    audio.CSPin = SD_ChipSelectPin; 
-    pinMode(MIC, INPUT);  
+  rtc.begin();
+  DateTime now = rtc.now();
+  pinMode(interruptPin, INPUT_PULLUP);
+  pinMode(LED_Work,OUTPUT);
+  pinMode(LED_Error,OUTPUT);
+  pinMode(MIC, INPUT);
     
-  	if (!SD.begin(SD_ChipSelectPin)) LedError();
-
-    /*
-    //Poner en hora el reloj
-    tmElements_t tm;
-    tm.Hour = 15;               // set the RTC to an arbitrary time
-    tm.Minute = 50;
-    tm.Second = 20;
-    tm.Day = 6;
-    tm.Month = 9;
-    tm.Year = 2021 - 1970;      // tmElements_t.Year is the offset from 1970
-    RTC.write(tm);              // set the RTC from the tm structure
-    */
+  audio.CSPin = SD_ChipSelectPin;  
+  if (!SD.begin(SD_ChipSelectPin)) LedError();
+//==========================
+  audio.startRecording("Setup.wav",FreqMuestreo,MIC);
+  delay(200);
+  audio.stopRecording("Setup.wav"); 
+  Siguiente=false;
+//==========================  
     
-    if (rtc.lostPower()) {
-		rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-		// This line sets the RTC with an explicit date & time, for example to set
-		// January 21, 2014 at 3am you would call:
-		//rtc.adjust(DateTime(2021, 9, 6, 15, 34, 30));// Esta linea es para ajustar de forma manual el día y hora
-	  }
+  if (rtc.lostPower()) {
+	rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+	}
         
     
-    RTC.setAlarm(ALM1_MATCH_DATE, 0, 0, 0, 1);
-    RTC.setAlarm(ALM2_MATCH_DATE, 0, 0, 0, 1);
-    RTC.alarm(ALARM_1);
-    RTC.alarm(ALARM_2);
-    RTC.alarmInterrupt(ALARM_1, false);
-    RTC.alarmInterrupt(ALARM_2, false);
-    RTC.squareWave(SQWAVE_NONE);
-
+  RTC.setAlarm(ALM1_MATCH_DATE, 0, 0, 0, 1);
+  RTC.setAlarm(ALM2_MATCH_DATE, 0, 0, 0, 1);
+  RTC.alarm(ALARM_1);
+  RTC.alarm(ALARM_2);
+  RTC.alarmInterrupt(ALARM_1, false);
+  RTC.alarmInterrupt(ALARM_2, false);
+  RTC.squareWave(SQWAVE_NONE);
     
-    time_t t; 
-    t=RTC.get();
-    RTC.setAlarm(ALM1_MATCH_HOURS , 0, 30, 17, 0);  //Se setea la Hora de inicio  
-    RTC.setAlarm(ALM2_MATCH_HOURS, 0,  30, 19, 0);  //Se pone la hora del primer corte de grabacion
-    RTC.alarm(ALARM_1); // clear the alarm flag
-    RTC.alarm(ALARM_2);                
-    RTC.squareWave(SQWAVE_NONE); 
-    RTC.alarmInterrupt(ALARM_1, true); // enable interrupt output for Alarm 1            
-    RTC.alarmInterrupt(ALARM_2, true);
-
-    //Serial.print("Hora de la libreria nueva: ");Serial.print(hour(t));Serial.print(":");Serial.println(minute(t));
-    //Serial.print("Hora del RTClib: ");Serial.print(now.hour());Serial.print(":");Serial.println(now.minute());
-    //delay(1000);
-    
-    //digitalWrite(LED_Control,HIGH);
-    sleep_enable();
-    attachInterrupt(0, wakeUp, LOW);
-    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-    sleep_cpu();
+  time_t t; 
+  t=RTC.get();
+  RTC.setAlarm(ALM1_MATCH_HOURS , 0, 55, 17, 0);  //Se setea la Hora de inicio  
+  RTC.setAlarm(ALM2_MATCH_HOURS, 0, 55, 19, 0);  //Se pone la hora del primer corte de grabacion
+  RTC.alarm(ALARM_1); // clear the alarm flag
+  RTC.alarm(ALARM_2);                
+  RTC.squareWave(SQWAVE_NONE); 
+  RTC.alarmInterrupt(ALARM_1, true); // enable interrupt output for Alarm 1            
+  RTC.alarmInterrupt(ALARM_2, true);
+       
+  sleep_enable();
+  attachInterrupt(0, wakeUp, LOW);
+  set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+  sleep_cpu(); //Modo de bajo consumo
 }
 
 void loop() {
@@ -160,22 +139,18 @@ void loop() {
 			SdFile::dateTimeCallback(dateTime); 
       audio.startRecording(filename,FreqMuestreo,MIC);
       digitalWrite(LED_Work,HIGH);
-      //digitalWrite(LED_Control,LOW);
       Siguiente=false;
       t=RTC.get();
       tiempo_fichero = millis();
       HORA=hour(t)+7;
-      MIN=0;
-      //Serial.print("HORA antes del primer if: "); Serial.println(HORA);
+      MIN=1;
       if(HORA >= 24){
         HORA = HORA - 24;
       }
-      //Serial.print("HORA despues del primer if: "); Serial.println(HORA);
       if (HORA >= HoraDormir || HORA < HoraInicio){
         HORA=HoraInicio;
         MIN=MinInicio;
       }
-      //Serial.print("HORA de la alarma: "); Serial.println(HORA);
       RTC.setAlarm(ALM1_MATCH_HOURS , 0, MIN, HORA, 0);  
       RTC.alarm(ALARM_1);             
     }        
@@ -207,12 +182,11 @@ void Dormir_Alarma2(){
   sleep_enable();
   attachInterrupt(0, wakeUp, LOW);
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-  //digitalWrite(LED_Control,HIGH);
   digitalWrite(LED_Work,LOW);
   time_t t;
   t=RTC.get();
   HORA_2=hour(t)+7;
-  MIN_2=0;
+  MIN_2=1;
   if(HORA_2 >= 24){
     HORA_2 = HORA_2 - 24;
   }
