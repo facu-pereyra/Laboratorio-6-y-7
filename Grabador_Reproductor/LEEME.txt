@@ -1,0 +1,3 @@
+BC_Grab: Sketch de la grabadora que manda una señal a otro arduino con el sketch BC_speaker para la futura reproduccion del archivo wav
+
+BC_speaker: Sketch del reproductor con el speaker. Reproduce archivos aleatoriamente.
