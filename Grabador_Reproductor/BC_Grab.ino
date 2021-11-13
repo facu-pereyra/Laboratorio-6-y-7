@@ -176,9 +176,9 @@ void loop() {
   if (!digitalRead(interruptPin)){
     time_t t = RTC.get();
     if (RTC.alarm(ALARM_1)){             
-      //digitalWrite(Transistor,HIGH);
-      delay(500);
       if(Controlador_boton==0){
+	//digitalWrite(Transistor,HIGH);
+      	delay(500);      
         if (!SD.begin(SD_ChipSelectPin)) LedError();
         getFileName();
         SdFile::dateTimeCallback(dateTime); 
