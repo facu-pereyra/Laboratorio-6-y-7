@@ -159,20 +159,20 @@ void loop() {
   DateTime now = rtc.now();
   if (!digitalRead(interruptPin)){
     time_t t = RTC.get();
-    if (RTC.alarm(ALARM_1)){             
-      digitalWrite(Transistor,HIGH);
-      delay(500);
+    if (RTC.alarm(ALARM_1)){                   
       if(Controlador_boton==0){
+	digitalWrite(Transistor,HIGH);
+      	delay(500);      
         if (!SD.begin(SD_ChipSelectPin)) LedError();
         getFileName();
         SdFile::dateTimeCallback(dateTime); 
         audio.startRecording(filename,FreqMuestreo,MIC);
         digitalWrite(LED_Work,HIGH);
-      }
-      Siguiente=false;
-      Controlador_boton=true;
+      	Siguiente=false;
+      	Controlador_boton=true;
+      	tiempo_fichero = millis();
+      }      
       t=RTC.get();
-      tiempo_fichero = millis();
       HORA=hour(t)+10;
       MIN=1;
       if(HORA >= 24){
