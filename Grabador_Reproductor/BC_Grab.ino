@@ -1,13 +1,11 @@
-/*
+/**
 ******************************
 * El Arduino EMPIEZA DORMIDO *
 ******************************
 
-* Alarma_1 da el inicio de grabación cuya frecuencia de muestreo la da la variable "FreqMuestreo"
+* Alarma_1 da el inicio de grabación cuya frecuencia de muestreo la da la variable "FreqMuestreo".
 
-* Si la Alarma_1 debe sonar entre la HoraDormir y la HoraInicio, entonces se programa nuevamente para HoraInicio
-
-* Alarma_2 corta la grabación y duerme hasta la alarma 1
+* Alarma_2 corta la grabación y duerme hasta la alarma 1.
 
 * Hay 2 botones. Un botón despierta el arduino e inicia la grabación. 
   El BotonBreak corta la grabación y pone a dormir al arduino
@@ -18,7 +16,11 @@
  entonces el archivo se llamará 24160735.wav
 
 * Cuando se toca el botón para grabar y no tiene la tarjeta SD salta error (titila 6 veces el led ROJO) y luego se reinicia 
- el Arduino.  
+ el Arduino. 
+
+* Manda el pin "Pin_Speaker" a LOW a tantos minutos (dado por "Able_Speaker")iniciada la grabación, luego 
+  manda a HIGH a los x minutos dado por la variable "Disable_Speaker". Presionando el botón "BotonBreak",
+  tambien manda a HIGH el pin "Pin_Speaker".
  
         ***********
         **WARNING**: EVITAR SACAR LA TARJETA MICRO SD DURANTE LA GRABACIÓN (SE PUEDE ROMPER).
@@ -43,33 +45,31 @@ TMRpcm audio;
 //Configurable
 
 uint8_t Duracion = 15; //Duracion de los ficheros, esta en minutos
-uint8_t Able_Speaker = 2; //Tiempo desde que empezó a grabar para activar el speaker
-uint8_t Disable_Speaker = 3; //Duración de la reproduccion del archivo wav
+uint8_t Able_Speaker = 10; //Tiempo desde que empezó a grabar para activar el speaker
+uint8_t Disable_Speaker = 15; //Duración de la reproduccion del archivo wav
 
-uint16_t FreqMuestreo = 22000; //Frecuencia de muestreo
+uint16_t FreqMuestreo = 22000; //Frecuencia de muestreo en Hz
 
-uint8_t HoraInicio = 11; //Empieza a grabar a esta hora. A las 10 horas se repite el proceso
-uint8_t MinInicio = 1;
+uint8_t HoraInicio = 10; //Empieza a grabar a esta hora. A las 10 horas se repite el proceso
+uint8_t MinInicio = 5;
 
-uint8_t HoraFinal = 17; //Termina de grabar a esta hora y se duerme. A las 10 horas se repite el proceso
-uint8_t MinFinal = 30; 
+uint8_t HoraFinal = 12; //Termina de grabar a esta hora y se duerme. A las 10 horas se repite el proceso
+uint8_t MinFinal = 5; 
 
-uint8_t HoraDormir = 19; //A partir de esta hora hasta la HoraInicio el Arduino está dormido
 //==============================================================================
 char filename[] = "00000000.wav"; 
 
+uint8_t Transistor = 3;
 uint8_t LED_Work = 4;
 uint8_t LED_Error = 5;
 uint8_t RST_PIN = 6; 
 uint8_t BotonBreak = 7;
 uint8_t Pin_Speaker = 8;
-//uint8_t Transistor = 9;
-
 
 volatile boolean Siguiente = false; //para ir al próximo fichero
 volatile boolean Controlador_boton = false;
 volatile boolean Grabando = false; //Para saber si graba así activa el pin para rerpoducir
-volatile boolean Controlador = true; 
+volatile boolean Controlador = false; 
 
 
 unsigned long tiempo_grabando; //Tiempo que se esta grabando
@@ -78,11 +78,6 @@ unsigned long tiempo_fichero; //Variable del millis()
 unsigned long Aviso_Speaker = Able_Speaker * 60000;
 unsigned long Sacar_Speaker = Disable_Speaker * 60000;
 unsigned long SaltoFichero = Duracion * 60000; //60 seg * 1000 (mili) = 60000 milisegundos
-
-uint8_t HORA;
-uint8_t HORA_2;
-uint8_t MIN;
-uint8_t MIN_2;
 
 //==============================================================================
   RTC_DS3231 rtc;
@@ -108,8 +103,8 @@ void LedError() {
     digitalWrite(LED_Error, LOW);
     delay(1000);      
   }
-  //pinMode(RST_PIN,  OUTPUT);
-  //digitalWrite(RST_PIN, LOW);
+  pinMode(RST_PIN,  OUTPUT);
+  digitalWrite(RST_PIN, LOW);
 }
 //==============================================================================
 void wakeUp(){
@@ -118,6 +113,12 @@ void wakeUp(){
 }
 //==============================================================================
 void setup() {
+  //----------------------------------------------
+  //Cambiar frecuencia del reloj
+  
+  //CLKPR = 0x80; // (1000 0000) enable change in clock frequency
+  //CLKPR = 0x01; // (0000 0001) use clock division factor 2 to reduce the frequency from 16 MHz to 8 MHz
+  //----------------------------------------------
   rtc.begin();
   DateTime now = rtc.now();
   pinMode(interruptPin, INPUT_PULLUP);
@@ -126,10 +127,10 @@ void setup() {
   pinMode(MIC, INPUT);
   pinMode(Pin_Speaker,OUTPUT);
   pinMode(BotonBreak, INPUT_PULLUP);
-  //pinMode(Transistor, OUTPUT);
+  pinMode(Transistor, OUTPUT);
 
-  digitalWrite(Pin_Speaker,LOW); 
-  //digitalWrite(Transistor,HIGH);
+  digitalWrite(Pin_Speaker,HIGH); 
+  digitalWrite(Transistor,HIGH);
     
   audio.CSPin = SD_ChipSelectPin;  
   if (!SD.begin(SD_ChipSelectPin)) LedError();
@@ -143,8 +144,7 @@ void setup() {
   if (rtc.lostPower()) {
 	rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
 	}
-        
-    
+           
   RTC.setAlarm(ALM1_MATCH_DATE, 0, 0, 0, 1);
   RTC.setAlarm(ALM2_MATCH_DATE, 0, 0, 0, 1);
   RTC.alarm(ALARM_1);
@@ -163,7 +163,7 @@ void setup() {
   RTC.alarmInterrupt(ALARM_1, true); // enable interrupt output for Alarm 1            
   RTC.alarmInterrupt(ALARM_2, true);
 
-  //digitalWrite(Transistor,LOW);     
+  digitalWrite(Transistor,LOW);     
   sleep_enable();
   attachInterrupt(0, wakeUp, LOW);
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
@@ -177,8 +177,8 @@ void loop() {
     time_t t = RTC.get();
     if (RTC.alarm(ALARM_1)){             
       if(Controlador_boton==0){
-	//digitalWrite(Transistor,HIGH);
-      	delay(500);      
+        digitalWrite(Transistor,HIGH);
+        delay(500);
         if (!SD.begin(SD_ChipSelectPin)) LedError();
         getFileName();
         SdFile::dateTimeCallback(dateTime); 
@@ -191,16 +191,7 @@ void loop() {
         tiempo_fichero = millis();
       }            
       t=RTC.get();
-      HORA=hour(t)+10;
-      MIN=1;
-      if(HORA >= 24){
-        HORA = HORA - 24;
-      }
-      if (HORA >= HoraDormir || HORA < HoraInicio){
-        HORA=HoraInicio;
-        MIN=MinInicio;
-      }
-      RTC.setAlarm(ALM1_MATCH_HOURS , 0, MIN, HORA, 1);  
+      RTC.setAlarm(ALM1_MATCH_HOURS , 0, MinInicio, HoraInicio, 1);  
       RTC.alarm(ALARM_1);
 	    RTC.alarmInterrupt(ALARM_1, true);	  
     }        
@@ -209,7 +200,7 @@ void loop() {
       Dormir_Alarma2();          
     }
     else{ 									//Este else es para el botón
-      //digitalWrite(Transistor,HIGH);
+      digitalWrite(Transistor,HIGH);
       delay(500);
       if (!SD.begin(SD_ChipSelectPin)) LedError();
       getFileName();
@@ -229,9 +220,10 @@ void loop() {
     set_sleep_mode(SLEEP_MODE_PWR_DOWN);
     audio.stopRecording(filename);
     digitalWrite(LED_Work,LOW);
+    digitalWrite(Pin_Speaker,HIGH);
     Controlador_boton = false;
     Grabando = false; 
-    //digitalWrite(Transistor,LOW); 
+    digitalWrite(Transistor,LOW); 
     delay(500); 
     sleep_cpu();
   }
@@ -247,22 +239,20 @@ void loop() {
     audio.startRecording(filename,FreqMuestreo,MIC);
     digitalWrite(LED_Work,HIGH);
     Siguiente=false;
-    Grabando = true;
     t=RTC.get();
     tiempo_fichero = millis();
   }
-  if(Grabando==1){
-    if((millis() - tiempo_grabando) > Aviso_Speaker && Controlador==1){
-      digitalWrite(Pin_Speaker,HIGH);
+    if(Grabando==1 && (millis() - tiempo_grabando) > Aviso_Speaker){
+      digitalWrite(Pin_Speaker,LOW);
       tiempo_speaking=millis();
+      Grabando = false;
+      Controlador=true;
+    }
+  if((millis() - tiempo_speaking) > Sacar_Speaker && Controlador==1){
+      digitalWrite(Pin_Speaker,HIGH);
+      Grabando = false;
       Controlador = false;
     }
-    if((millis() - tiempo_speaking) > Sacar_Speaker && Controlador==0){
-      digitalWrite(Pin_Speaker,LOW);
-      Grabando = false;
-      Controlador = true;
-    }
-  }
 }
 
 //==============================================================================
@@ -275,22 +265,13 @@ void Dormir_Alarma2(){
     digitalWrite(LED_Work,LOW);
   }
   Controlador_boton=false; 
-  Grabando = false; 
+  Grabando = false;
   time_t t;
   t=RTC.get();
-  HORA_2=hour(t)+10;
-  MIN_2=1;
-  if(HORA_2 >= 24){
-    HORA_2 = HORA_2 - 24;
-  }
-  if (HORA_2 >= HoraDormir || HORA_2 < HoraInicio){
-    HORA_2=HoraFinal;
-    MIN_2=MinFinal;
-  }
-  RTC.setAlarm(ALM2_MATCH_HOURS , 0, MIN_2, HORA_2, 1);           
+  RTC.setAlarm(ALM2_MATCH_HOURS , 0, MinFinal, HoraFinal, 1);           
   RTC.alarm(ALARM_2);
   RTC.alarmInterrupt(ALARM_2, true);
-  //digitalWrite(Transistor,LOW); 
+  digitalWrite(Transistor,LOW); 
   delay(500); 
   sleep_cpu();
 }
