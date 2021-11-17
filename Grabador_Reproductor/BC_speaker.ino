@@ -76,6 +76,7 @@ void loop(){
     }
     if(digitalRead(Pin_Speaker)==1){
       tmrpcm.stopPlayback();
+      Controlador=true;
       digitalWrite(Transistor,LOW);
     }
 }
