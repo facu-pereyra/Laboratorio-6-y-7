@@ -42,8 +42,9 @@ String wav_2 = "Audio/Sint.wav"; // El nombre tiene que tener menos de 8 caráct
 //Conexiones:
 
 uint8_t Transistor = 3;
+uint8_t RST_PIN = 4; // Se conecta al pin RST del arduino.
 uint8_t LED_Error = 5;
-uint8_t RST_PIN = 6; // Se conecta al pin RST del arduino.
+uint8_t Transistor_potencia = 6; // Es el transistor del amplificador de potencia
 uint8_t Marca_delay = 7; 
 uint8_t Duerme_speaker = 8;
 uint8_t Speaker = 9; //Está conectado el Speaker, NO CAMBIAR PARA ARDUINO NANO O MINI.
@@ -84,12 +85,14 @@ void setup(){
   pinMode(Duerme_speaker, INPUT_PULLUP);
   pinMode(Marca_delay, OUTPUT);
   pinMode(LED_Error,OUTPUT);
-  pinMode(Transistor, OUTPUT);  
+  pinMode(Transistor, OUTPUT);
+  pinMode(Transistor_potencia, OUTPUT);	
   audio.speakerPin = Speaker; 
   
   digitalWrite(Marca_delay,HIGH);
   
-  delay(5000); //para que no se reproduzca el audio al inicio. 
+  delay(5000); //para que no se reproduzca el audio al inicio.
+  digitalWrite(Transistor_potencia,LOW);
   //----------------------------------
   digitalWrite(Transistor,LOW);     
   sleep_enable();
@@ -103,6 +106,7 @@ void loop(){
   
   if(audio.isPlaying()==0 && Control_inicio==1){
     digitalWrite(Transistor,HIGH);
+    digitalWrite(Transistor_potencia,HIGH);
     digitalWrite(Speaker,HIGH);
     if(Aviso==0){
       fileToPlay=wav_1;
@@ -129,6 +133,7 @@ void loop(){
     delay(100);
     digitalWrite(Marca_delay,HIGH);
     digitalWrite(Speaker,LOW);
+    digitalWrite(Transistor_potencia,LOW);	
     //----------------------------------
     digitalWrite(Transistor,LOW);     
     sleep_enable();
@@ -149,8 +154,9 @@ void loop(){
     }
     Control_inicio=true;
     audio.stopPlayback();
-    digitalWrite(Speaker,LOW); 
-	//----------------------------------
+    digitalWrite(Speaker,LOW);
+    digitalWrite(Transistor_potencia,LOW);
+    //----------------------------------
     digitalWrite(Transistor,LOW);     
     sleep_enable();
     attachInterrupt(0, wakeUp, LOW);
