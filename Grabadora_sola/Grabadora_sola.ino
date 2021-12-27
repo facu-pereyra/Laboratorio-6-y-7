@@ -63,6 +63,7 @@ uint16_t FreqMuestreo = 22000; //Frecuencia de muestreo de la grabación
 
 //Conexiones:
 
+// El boton_start se conecta en el pin interruptPin (D2)
 uint8_t Transistor = 3;
 uint8_t LED_Work = 4;
 uint8_t LED_Error = 5;
@@ -135,9 +136,8 @@ void wakeUp(){
 void setup() {
   //----------------------------------------------
   //Cambiar frecuencia del reloj
-  
-  //CLKPR = 0x80; // (1000 0000) enable change in clock frequency
-  //CLKPR = 0x01; // (0000 0001) use clock division factor 2 to reduce the frequency from 16 MHz to 8 MHz
+  //CLKPR = 0x80; 
+  //CLKPR = 0x01; 
   //----------------------------------------------
   rtc.begin();
   DateTime now = rtc.now();
